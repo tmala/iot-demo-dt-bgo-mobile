@@ -1,7 +1,14 @@
-# MobileIotDt
+# IoT Mobile DT Virtualsensor
+This is a generic mobil-friendly web-app to interact with virtual sensors from Disruptive Technologies.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.2.
-This is a simple mobil-friendly webpage to send an update to an existing Virtual Sensor in DT.
+
+## prerequisites
+A file named apikey.ts must be present in src/app and contain the following
+```
+export const API_KEY = '<YOUR_DT_APIKEY>';
+```
+
+
 
 ## Development server
 
@@ -29,5 +36,6 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 Before running the tests make sure you are serving the app via `ng serve`.
 
 ## Further help
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.3.2.
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
