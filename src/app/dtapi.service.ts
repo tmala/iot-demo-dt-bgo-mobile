@@ -6,6 +6,7 @@ import { API_KEY } from './apikey';
 export class DtApiService {
   private apiKey: string = API_KEY;
   private baseUrl = 'https://virtual-sensor.disruptive-technologies.com/v1/';
+  private thingsUrl = this.baseUrl + 'things/';
   private virtualSensorsUrl = this.baseUrl +  'virtual-sensors/';
 
   private getHeaders(key: string) {
@@ -27,4 +28,11 @@ export class DtApiService {
     return this.http.post(url, postParams, { headers: this.getHeaders(this.apiKey) })
       .map(res => res.json());
   }
+
+  public getThingById(thingId: string): any {
+    const url = this.thingsUrl + thingId;
+    return this.http.get(url, {headers: this.getHeaders(this.apiKey)})
+      .map(res => res.json());
+  }
+
 }

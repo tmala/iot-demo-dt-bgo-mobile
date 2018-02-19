@@ -1,5 +1,56 @@
-<div align="center">
-  <p class="smallText">{{title}}</p>
-  <p class="italicText">Do you think it's too much noise in office landscape?</p>
-  <button (click)="tooMuchNoise()" class="button buttonred">Yes - Too Much Noise !!!</button>
+<div align="left">
+  <table border="0">
+    <tr>
+      <td valign="top" width="100">
+        <div *ngIf="deviceArr">
+          <table border="0">
+            <div *ngFor="let device of deviceArr">
+              <tr>
+                <td><img src="/assets/{{device.type}}.png" height="18" width="18" /></td>
+                <td></td>
+                <td><button (click)="selectDevice(device)">{{device.labels['name']}}</button></td>
+              </tr>
+            </div>
+          </table>
+        </div>
+      </td>
+      <td valign="top" width="400">
+        <div *ngIf="selectedDevice">
+          <table border="0">
+            <tr>
+              <td valign="top" width="150" align="center"><img align="middle" src="/assets/{{selectedDevice.type}}.png" height="96" width="96" /></td>
+              <td valign="top" width="250">
+                  <table border="0" width="100%">
+                      <tr><td align="center">{{selectedDevice.labels['name']}}</td></tr>
+                      <tr><td align="center"><small>{{selectedDevice.sensorId}}</small></td></tr>
+                  </table>
+                  <div *ngIf="selectedDevice.type==='touch'">
+                      <table border="0" width="100%">
+                          <tr><td align="center">{{toLocaleTime(selectedDevice.reported.touch.updateTime)}}</td></tr>
+                          <tr><td align="center"><button (click)="set_vs_touch(selectedDevice.sensorId)">Send Touch</button></td></tr>
+                      </table>
+                  </div>
+                  <div *ngIf="selectedDevice.type==='temperature'">
+                      <table border="0" width="100%">
+                          <tr><td align="center">{{toLocaleTime(selectedDevice.reported.temperature.updateTime)}}</td></tr>
+                          <tr><td align="center">{{selectedDevice.reported.temperature.value}} ˙C</td></tr>
+                        <tr><td align="center"><input #newTemp type="text" value="{{selectedDevice.reported.temperature.value + ''}}"/> <button (click)="set_vs_temp(selectedDevice.sensorId, newTemp.value)">Update</button></td></tr>
+                      </table>
+                  </div>
+                  <div *ngIf="selectedDevice.type==='proximity'">
+                      <table border="0" width="100%">
+                          <tr><td align="center">{{toLocaleTime(selectedDevice.reported.objectPresent.updateTime)}}</td></tr>
+                          <tr><td align="center">{{selectedDevice.reported.objectPresent.state}}</td></tr>
+                          <tr><td align="center"><div *ngIf="selectedDevice.reported.objectPresent.state=='NOT_PRESENT'; then objectpresent else objectnotpresent"></div></td></tr>
+                      </table>
+                      <ng-template #objectpresent><button (click)="set_vs_prox_present(selectedDevice.sensorId)">Set to 'PRESENT'</button></ng-template>
+                      <ng-template #objectnotpresent><button (click)="set_vs_prox_not_present(selectedDevice.sensorId)">Set to 'NOT_PRESENT'</button></ng-template>
+                  </div>
+              </td>
+            </tr>
+          </table>
+          </div>
+      </td>
+    </tr>
+  </table>
 </div>
