@@ -6,6 +6,8 @@ This is a generic mobil-friendly web-app to interact with virtual sensors from D
 A file named apikey.ts must be present in src/app and contain the following
 ```
 export const API_KEY = '<YOUR_DT_APIKEY>';
+export const BASIC_AUTH = 'Basic <usr:pwd in Base64Encoding>';
+export const PROJECT_ID = '<PROJECT_ID>';
 ```
 
 
@@ -22,7 +24,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Deploy to RaspBerryPi
+## Deploy to RaspBerryPi on openHAB
 Set the base_href to "/static/mobile/" and deploy the files under dist to /etc/openhab2/html/mobile/ on the pi
 You have to create the directory /etc/openhab2/html/mobile
 
