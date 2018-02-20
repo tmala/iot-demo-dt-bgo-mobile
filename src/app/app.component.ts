@@ -4,7 +4,6 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import { DtApiV2Service } from './dtapiv2.service';
 import { DeviceResponse, DeviceListResponse } from './dt/dt_response';
-import { Proximity } from './dt/proximity.enum';
 import { PROJECT_ID } from './apikey';
 
 @Component({
@@ -18,6 +17,8 @@ export class AppComponent implements OnInit {
   private dtApiService: DtApiV2Service;
   public deviceArr: DeviceResponse[] = new Array();
   public selectedDevice: DeviceResponse = null;
+
+
 
   constructor(http: Http) {
     this.dtApiService = new DtApiV2Service(http);
@@ -91,11 +92,11 @@ export class AppComponent implements OnInit {
   }
 
   set_vs_prox_present(sensorID: string): void {
-    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, Proximity.PRESENT)
+    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, DtApiV2Service.PROXIMITY_PRESENT)
       .subscribe(
         (res: any) => {
           console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = PRESENT, result: ' + res);
-          this.selectedDevice.reported.objectPresent.state = Proximity.PRESENT;
+          this.selectedDevice.reported.objectPresent.state = DtApiV2Service.PROXIMITY_PRESENT;
           this.selectedDevice.reported.objectPresent.updateTime = this.timestamp();
         },
         (error: any) => {
@@ -109,11 +110,11 @@ export class AppComponent implements OnInit {
   }
 
   set_vs_prox_not_present(sensorID: string): void {
-    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, Proximity.NOT_PRESENT)
+    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, DtApiV2Service.PROXIMITY_NOT_PRESENT)
       .subscribe(
         (res: any) => {
           console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = NOT_PRESENT, result: ' + res);
-          this.selectedDevice.reported.objectPresent.state = Proximity.NOT_PRESENT;
+          this.selectedDevice.reported.objectPresent.state = DtApiV2Service.PROXIMITY_NOT_PRESENT;
           this.selectedDevice.reported.objectPresent.updateTime = this.timestamp();
         },
         (error: any) => {
