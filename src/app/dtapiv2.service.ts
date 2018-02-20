@@ -9,7 +9,7 @@ const API_DEVICES = '/devices?';
 const API_DEVICE = '/devices/';
 const API_STREAM_ALL = 'devices:stream?';
 const API_PUBLISH = ':publish';
-const FILTER_LABEL_VS = 'label_filters=virtual-sensor%3D'; // 'virtual-sensor=' UrlEncoded
+const FILTER_LABEL_VS = 'label_filters=virtual-sensor'; // checks for the presence of the label "virtual-sensor"
 
 @Injectable()
 export class DtApiV2Service {

@@ -1,15 +1,19 @@
 # IoT Mobile DT Virtualsensor
 This is a generic mobil-friendly web-app to interact with virtual sensors from Disruptive Technologies.
+To identify the virtual sensors they need to be labeled with a label "virtual-sensor".
+The label does not need any value, just the key.
 
 
 ## prerequisites
 A file named apikey.ts must be present in src/app and contain the following
 ```
 export const API_KEY = '<YOUR_DT_APIKEY>';
-export const BASIC_AUTH = 'Basic <usr:pwd in Base64Encoding>';
+export const BASIC_AUTH = 'Basic <"usr:pwd" in Base64Encoding>';
 export const PROJECT_ID = '<PROJECT_ID>';
 ```
-
+The usr:pwd is created as a Service Account with the role "Project User".
+If the service-account needs to perform administrative tasks as well, 
+the service-account needs to be assigned a role that gives the needed authorization.
 
 
 ## Development server
