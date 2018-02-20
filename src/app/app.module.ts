@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { DtApiService } from './dtapi.service';
+import { DtApiV2Service } from './dtapiv2.service';
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import { DtApiService } from './dtapi.service';
     BrowserModule,
     HttpModule
   ],
-  providers: [DtApiService],
+  providers: [DtApiV2Service],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

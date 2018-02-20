@@ -3,8 +3,9 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import { DtApiV2Service } from './dtapiv2.service';
-import { DeviceResponse, DeviceListResponse} from './dt/dt_response';
-import {PROJECT_ID} from './apikey';
+import { DeviceResponse, DeviceListResponse } from './dt/dt_response';
+import { Proximity } from './dt/proximity.enum';
+import { PROJECT_ID } from './apikey';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,7 @@ import {PROJECT_ID} from './apikey';
   providers: []
 })
 
-
-
 export class AppComponent implements OnInit {
-  public title = 'Mobile DT virtual sensors';
   private dtApiService: DtApiV2Service;
   public deviceArr: DeviceResponse[] = new Array();
   public selectedDevice: DeviceResponse = null;
@@ -55,9 +53,8 @@ export class AppComponent implements OnInit {
   }
 
   toLocaleTime(ts: string): string {
-    let ret = '';
     const d = new Date(ts);
-    ret = d.getDate() > 9 ? d.getDate() + '' : '0' + d.getDate();
+    let ret = d.getDate() > 9 ? d.getDate() + '' : '0' + d.getDate();
     ret += '.';
     ret +=  (d.getMonth() + 1) > 9 ? d.getMonth() + 1 + '' : '0' + (d.getMonth() + 1);
     ret += '.';
@@ -71,9 +68,8 @@ export class AppComponent implements OnInit {
   }
 
   timestamp() {
-    let ret = '';
     const d = new Date();
-    ret = d.getFullYear() + '-';
+    let ret = d.getFullYear() + '-';
     ret +=  (d.getMonth() + 1 ) > 9 ? d.getMonth() + 1 + '' : '0' + (d.getMonth() + 1);
     ret += '-';
     ret += d.getDate() > 9 ? d.getDate() + '' : '0' + d.getDate();
@@ -95,13 +91,12 @@ export class AppComponent implements OnInit {
   }
 
   set_vs_prox_present(sensorID: string): void {
-    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, 'PRESENT')
+    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, Proximity.PRESENT)
       .subscribe(
         (res: any) => {
           console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = PRESENT, result: ' + res);
-          this.selectedDevice.reported.objectPresent.state = 'PRESENT';
-          const ts = this.timestamp();
-          this.selectedDevice.reported.objectPresent.updateTime = ts;
+          this.selectedDevice.reported.objectPresent.state = Proximity.PRESENT;
+          this.selectedDevice.reported.objectPresent.updateTime = this.timestamp();
         },
         (error: any) => {
           console.error(' Error: ' + error);
@@ -114,13 +109,12 @@ export class AppComponent implements OnInit {
   }
 
   set_vs_prox_not_present(sensorID: string): void {
-    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, 'NOT_PRESENT')
+    this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, Proximity.NOT_PRESENT)
       .subscribe(
         (res: any) => {
           console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = NOT_PRESENT, result: ' + res);
-          this.selectedDevice.reported.objectPresent.state = 'NOT_PRESENT';
-          const ts = this.timestamp();
-          this.selectedDevice.reported.objectPresent.updateTime = ts;
+          this.selectedDevice.reported.objectPresent.state = Proximity.NOT_PRESENT;
+          this.selectedDevice.reported.objectPresent.updateTime = this.timestamp();
         },
         (error: any) => {
           console.error(' Error: ' + error);
@@ -138,8 +132,7 @@ export class AppComponent implements OnInit {
       .subscribe(
         (res: any) => {
           console.log('VirtualSensor with thingId ' + sensorID + ' set to temperature = ' + newTempStr + ', result: ' + res);
-          const ts = this.timestamp();
-          this.selectedDevice.reported.temperature.updateTime = ts;
+          this.selectedDevice.reported.temperature.updateTime = this.timestamp();
           this.selectedDevice.reported.temperature.value = Number.parseFloat(newTempStr);
         },
         (error: any) => {
@@ -148,7 +141,6 @@ export class AppComponent implements OnInit {
         },
         () => {
           console.log('HTTP request ended, hopefully with success');
-          const ts = this.timestamp();
         }
       );
   }
@@ -158,8 +150,7 @@ export class AppComponent implements OnInit {
       .subscribe(
         (res: any) => {
           console.log('VirtualSensor with thingId ' + sensorID + ' set to touch, result: ' + res);
-          const ts = this.timestamp();
-          this.selectedDevice.reported.touch.updateTime = ts;
+          this.selectedDevice.reported.touch.updateTime = this.timestamp();
         },
         (error: any) => {
           console.error(' Error: ' + error);
@@ -170,4 +161,5 @@ export class AppComponent implements OnInit {
         }
       );
   }
+
 }
