@@ -30,10 +30,10 @@
                           <tr><td align="center"><button (click)="set_vs_touch(selectedDevice.sensorId)">Send Touch</button></td></tr>
                       </table>
                   </div>
-                  <div *ngIf="selectedDevice.type==='temperature'">
+                  <div *ngIf="selectedDevice.type==='temperature' || selectedDevice.type==='barometer' ">
                       <table border="0" width="100%">
                           <tr><td align="center">{{toLocaleTime(selectedDevice.reported.temperature.updateTime)}}</td></tr>
-                          <tr><td align="center">{{selectedDevice.reported.temperature.value}} ˙C</td></tr>
+                          <tr><td align="center">{{selectedDevice.reported.temperature.value}} {{selectedDevice.unit}}</td></tr>
                         <tr><td align="center"><input #newTemp type="text" value="{{selectedDevice.reported.temperature.value + ''}}"/> <button (click)="set_vs_temp(selectedDevice.sensorId, newTemp.value)">Update</button></td></tr>
                       </table>
                   </div>

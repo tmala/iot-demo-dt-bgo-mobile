@@ -7,6 +7,7 @@ export class DeviceResponse {
   type: string;
   labels: [string[]];
   reported: Reported;
+  unit: string;
 }
 
 export class DeviceListResponse {

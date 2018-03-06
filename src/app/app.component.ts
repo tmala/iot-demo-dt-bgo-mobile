@@ -34,6 +34,15 @@ export class AppComponent implements OnInit {
           for (devRes of res.devices) {
             console.log('SensorID: ' + devRes.name);
             devRes.sensorId = this.extractSensorIdFromName(devRes.name);
+            if ( devRes.type === DtApiV2Service.SENSOR_TYPE_TEMPERATURE ) {
+              if ( devRes.labels[DtApiV2Service.SENSOR_LABEL_BAROMETER] ) {
+                devRes.unit = 'mbar';
+                devRes.type = DtApiV2Service.SENSOR_TYPE_BAROMETER;
+              } else {
+                devRes.unit = '˙C';
+              }
+
+            }
             this.deviceArr.push(devRes);
           }
         },
