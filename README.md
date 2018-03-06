@@ -7,7 +7,6 @@ The label does not need any value, just the key.
 ## prerequisites
 A file named apikey.ts must be present in src/app and contain the following
 ```
-export const API_KEY = '<YOUR_DT_APIKEY>';
 export const BASIC_AUTH = 'Basic <"usr:pwd" in Base64Encoding>';
 export const PROJECT_ID = '<PROJECT_ID>';
 ```
