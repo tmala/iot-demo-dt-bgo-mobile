@@ -62,22 +62,7 @@ export class AppComponent implements OnInit {
     return sensorID.replace(replaceMe, '');
   }
 
-  toLocaleTime(ts: string): string {
-    const d = new Date(ts);
-    let ret = d.getDate() > 9 ? d.getDate() + '' : '0' + d.getDate();
-    ret += '.';
-    ret +=  (d.getMonth() + 1) > 9 ? d.getMonth() + 1 + '' : '0' + (d.getMonth() + 1);
-    ret += '.';
-    ret += d.getFullYear() + ' ';
-    ret += d.getHours() > 9 ? d.getHours() + '' : '0' + d.getHours();
-    ret += ':';
-    ret += d.getMinutes() > 9 ? d.getMinutes() + '' : '0' + d.getMinutes();
-    ret += ':';
-    ret += d.getSeconds() > 9 ? d.getSeconds() + '' : '0' + d.getSeconds();
-    return ret;
-  }
-
-  timestamp() {
+  private timestamp() {
     const d = new Date();
     let ret = d.getFullYear() + '-';
     ret +=  (d.getMonth() + 1 ) > 9 ? d.getMonth() + 1 + '' : '0' + (d.getMonth() + 1);
@@ -94,6 +79,25 @@ export class AppComponent implements OnInit {
     ret += '+0' + Math.abs(d.getTimezoneOffset() / 60);
     ret += ':00';
     return ret;
+  }
+
+  toLocaleTime(ts: string): string {
+    const d = new Date(ts);
+    let ret = d.getDate() > 9 ? d.getDate() + '' : '0' + d.getDate();
+    ret += '.';
+    ret +=  (d.getMonth() + 1) > 9 ? d.getMonth() + 1 + '' : '0' + (d.getMonth() + 1);
+    ret += '.';
+    ret += d.getFullYear() + ' ';
+    ret += d.getHours() > 9 ? d.getHours() + '' : '0' + d.getHours();
+    ret += ':';
+    ret += d.getMinutes() > 9 ? d.getMinutes() + '' : '0' + d.getMinutes();
+    ret += ':';
+    ret += d.getSeconds() > 9 ? d.getSeconds() + '' : '0' + d.getSeconds();
+    return ret;
+  }
+
+  openInNewWindow(): void {
+    window.open(window.location.href, 'popup', 'menubar=on,toolbar=on');
   }
 
   selectDevice(device: DeviceResponse): void {
