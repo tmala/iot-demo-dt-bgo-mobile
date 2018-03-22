@@ -1,6 +1,6 @@
 import { Headers, Http } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { BASIC_AUTH, PROJECT_ID } from './apikey';
+import { BASIC_AUTH, PROJECT_ID } from '../apikey';
 
 const API_URL = 'https://api.disruptive-technologies.com/v2beta1/projects/';
 const API_URL_VS = 'https://emulator.d21s.com/v2beta1/projects/';

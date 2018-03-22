@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
-import { DtApiV2Service } from './dtapiv2.service';
-import { DeviceResponse, DeviceListResponse } from './dt/dt_response';
+import { DtApiV2Service } from './dt/dtapiv2.service';
+import { Device, DeviceList } from './dt/dt_model';
 import { PROJECT_ID } from './apikey';
 
 @Component({
@@ -15,8 +15,8 @@ import { PROJECT_ID } from './apikey';
 
 export class AppComponent implements OnInit {
   private dtApiService: DtApiV2Service;
-  public deviceArr: DeviceResponse[] = new Array();
-  public selectedDevice: DeviceResponse = null;
+  public deviceArr: Device[] = new Array();
+  public selectedDevice: Device = null;
 
 
 
@@ -29,8 +29,8 @@ export class AppComponent implements OnInit {
     // get All Virtual Sensors and populate array of SensorObjects
     this.dtApiService.getAllVirtualSensors()
       .subscribe(
-        (res: DeviceListResponse) => {
-          let devRes: DeviceResponse;
+        (res: DeviceList) => {
+          let devRes: Device;
           for (devRes of res.devices) {
             console.log('SensorID: ' + devRes.name);
             devRes.sensorId = this.extractSensorIdFromName(devRes.name);
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
     window.open(window.location.href, 'popup', 'menubar=on,toolbar=on');
   }
 
-  selectDevice(device: DeviceResponse): void {
+  selectDevice(device: Device): void {
     this.selectedDevice = device;
   }
 
