@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
+import { MyLog } from './myLog';
 import { DtApiV2Service } from './dt/dtapiv2.service';
 import { Device, DeviceList } from './dt/dt_model';
 import { PROJECT_ID } from './apikey';
@@ -18,51 +19,7 @@ export class AppComponent implements OnInit {
   public deviceArr: Device[] = new Array();
   public selectedDevice: Device = null;
 
-
-
-  constructor(http: Http) {
-    this.dtApiService = new DtApiV2Service(http);
-  }
-
-  ngOnInit(): void {
-    console.log('AppComponent initialized');
-    // get All Virtual Sensors and populate array of SensorObjects
-    this.dtApiService.getAllVirtualSensors()
-      .subscribe(
-        (res: DeviceList) => {
-          let devRes: Device;
-          for (devRes of res.devices) {
-            console.log('SensorID: ' + devRes.name);
-            devRes.sensorId = this.extractSensorIdFromName(devRes.name);
-            if ( devRes.type === DtApiV2Service.SENSOR_TYPE_TEMPERATURE ) {
-              if ( devRes.labels[DtApiV2Service.SENSOR_LABEL_BAROMETER] ) {
-                devRes.unit = 'mbar';
-                devRes.type = DtApiV2Service.SENSOR_TYPE_BAROMETER;
-              } else {
-                devRes.unit = '˙C';
-              }
-
-            }
-            this.deviceArr.push(devRes);
-          }
-        },
-        (error: any) => {
-          console.error(' Error: ' + error);
-          throw Error('Unable to get virtual sensors. Reason:' + error);
-        },
-        () => {
-          console.log('HTTP request ended, hopefully with success');
-        }
-      );
-  }
-
-  private extractSensorIdFromName(name: string): string {
-    const sensorID: string = name;
-    const replaceMe: string = 'projects/' + PROJECT_ID + '/devices/';
-    return sensorID.replace(replaceMe, '');
-  }
-
-  private timestamp() {
+  private static timestamp() {
     const d = new Date();
     let ret = d.getFullYear() + '-';
     ret +=  (d.getMonth() + 1 ) > 9 ? d.getMonth() + 1 + '' : '0' + (d.getMonth() + 1);
@@ -79,6 +36,50 @@ export class AppComponent implements OnInit {
     ret += '+0' + Math.abs(d.getTimezoneOffset() / 60);
     ret += ':00';
     return ret;
+  }
+
+
+  private static extractSensorIdFromName(name: string): string {
+    const sensorID: string = name;
+    const replaceMe: string = 'projects/' + PROJECT_ID + '/devices/';
+    return sensorID.replace(replaceMe, '');
+  }
+
+  constructor(http: Http) {
+    this.dtApiService = new DtApiV2Service(http);
+    MyLog.setCurrentLoglevel(MyLog.LOGLEVEL_TRACE);
+  }
+
+  ngOnInit(): void {
+    console.log('AppComponent initialized');
+    // get All Virtual Sensors and populate array of SensorObjects
+    this.dtApiService.getAllVirtualSensors()
+      .subscribe(
+        (res: DeviceList) => {
+          let devRes: Device;
+          for (devRes of res.devices) {
+            console.log('SensorID: ' + devRes.name);
+            devRes.sensorId = AppComponent.extractSensorIdFromName(devRes.name);
+            if ( devRes.type === DtApiV2Service.SENSOR_TYPE_TEMPERATURE ) {
+              if ( devRes.labels[DtApiV2Service.SENSOR_LABEL_BAROMETER] ) {
+                devRes.unit = 'mbar';
+                devRes.type = DtApiV2Service.SENSOR_TYPE_BAROMETER;
+              } else {
+                devRes.unit = '˚C';
+              }
+
+            }
+            this.deviceArr.push(devRes);
+          }
+        },
+        (error: any) => {
+          console.error(' Error: ' + error);
+          throw Error('Unable to get virtual sensors. Reason:' + error);
+        },
+        () => {
+          console.log('HTTP request ended, hopefully with success');
+        }
+      );
   }
 
   toLocaleTime(ts: string): string {
@@ -108,16 +109,22 @@ export class AppComponent implements OnInit {
     this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, DtApiV2Service.PROXIMITY_PRESENT)
       .subscribe(
         (res: any) => {
-          console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = PRESENT, result: ' + res);
+          if (MyLog.isInfo()) {
+            console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = PRESENT, result: ' + res);
+          }
           this.selectedDevice.reported.objectPresent.state = DtApiV2Service.PROXIMITY_PRESENT;
-          this.selectedDevice.reported.objectPresent.updateTime = this.timestamp();
+          this.selectedDevice.reported.objectPresent.updateTime = AppComponent.timestamp();
         },
         (error: any) => {
-          console.error(' Error: ' + error);
+          if (MyLog.isError()) {
+            console.error(' Error: ' + error);
+          }
           throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
-          console.log('HTTP request ended, hopefully with success');
+          if (MyLog.isTrace()) {
+            console.log('HTTP request ended, hopefully with success');
+          }
         }
       );
   }
@@ -126,16 +133,22 @@ export class AppComponent implements OnInit {
     this.dtApiService.updateVirtualSensor_proximity_setObjectPresent(sensorID, DtApiV2Service.PROXIMITY_NOT_PRESENT)
       .subscribe(
         (res: any) => {
-          console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = NOT_PRESENT, result: ' + res);
+          if (MyLog.isInfo()) {
+            console.log('VirtualSensor with thingId ' + sensorID + ' set to object_present = NOT_PRESENT, result: ' + res);
+          }
           this.selectedDevice.reported.objectPresent.state = DtApiV2Service.PROXIMITY_NOT_PRESENT;
-          this.selectedDevice.reported.objectPresent.updateTime = this.timestamp();
+          this.selectedDevice.reported.objectPresent.updateTime = AppComponent.timestamp();
         },
         (error: any) => {
-          console.error(' Error: ' + error);
+          if (MyLog.isError()) {
+            console.error(' Error: ' + error);
+          }
           throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
-          console.log('HTTP request ended, hopefully with success');
+          if (MyLog.isTrace()) {
+            console.log('HTTP request ended, hopefully with success');
+          }
         }
       );
   }
@@ -145,16 +158,22 @@ export class AppComponent implements OnInit {
     this.dtApiService.updateVirtualSensor_temperature_setTemperature(sensorID, newTempStr)
       .subscribe(
         (res: any) => {
-          console.log('VirtualSensor with thingId ' + sensorID + ' set to temperature = ' + newTempStr + ', result: ' + res);
-          this.selectedDevice.reported.temperature.updateTime = this.timestamp();
+          if (MyLog.isInfo()) {
+            console.log('VirtualSensor with thingId ' + sensorID + ' set to temperature = ' + newTempStr + ', result: ' + res);
+          }
+          this.selectedDevice.reported.temperature.updateTime = AppComponent.timestamp();
           this.selectedDevice.reported.temperature.value = Number.parseFloat(newTempStr);
         },
         (error: any) => {
-          console.error(' Error: ' + error);
+          if (MyLog.isError()) {
+            console.error(' Error: ' + error);
+          }
           throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
-          console.log('HTTP request ended, hopefully with success');
+          if (MyLog.isTrace()) {
+            console.log('HTTP request ended, hopefully with success');
+          }
         }
       );
   }
@@ -163,15 +182,21 @@ export class AppComponent implements OnInit {
     this.dtApiService.updateVirtualSensor_touch_set(sensorID)
       .subscribe(
         (res: any) => {
-          console.log('VirtualSensor with thingId ' + sensorID + ' set to touch, result: ' + res);
-          this.selectedDevice.reported.touch.updateTime = this.timestamp();
+          if (MyLog.isInfo()) {
+            console.log('VirtualSensor with thingId ' + sensorID + ' set to touch, result: ' + res);
+          }
+          this.selectedDevice.reported.touch.updateTime = AppComponent.timestamp();
         },
         (error: any) => {
-          console.error(' Error: ' + error);
+          if (MyLog.isError()) {
+            console.error(' Error: ' + error);
+          }
           throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
-          console.log('HTTP request ended, hopefully with success');
+          if (MyLog.isTrace()) {
+            console.log('HTTP request ended, hopefully with success');
+          }
         }
       );
   }
