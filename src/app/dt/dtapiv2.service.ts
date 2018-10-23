@@ -1,9 +1,10 @@
 import { Headers, Http } from '@angular/http';
+import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { BASIC_AUTH, PROJECT_ID } from '../apikey';
 
-const API_URL = 'https://api.disruptive-technologies.com/v2beta1/projects/';
-const API_URL_VS = 'https://emulator.d21s.com/v2beta1/projects/';
+const API_URL = 'https://api.disruptive-technologies.com/v2/projects/';
+const API_URL_VS = 'https://emulator.d21s.com/v2/projects/';
 const API_DEVICES = '/devices?';
 const API_DEVICE = '/devices/';
 const API_PUBLISH = ':publish';
@@ -35,7 +36,7 @@ export class DtApiV2Service {
 
   public getAllVirtualSensors(): any {
     return this.http.get(API_URL + PROJECT_ID + API_DEVICES + FILTER_LABEL_VS, {headers: DtApiV2Service.getHeaders()})
-      .map(res => res.json());
+      .pipe( map( (res: any) => res.json() ) );
   }
 
   public updateVirtualSensor_proximity_setObjectPresent(sensorID: string, objectPresent: string): any {
@@ -46,7 +47,7 @@ export class DtApiV2Service {
       }
     };
     return this.http.post(url, postData, { headers: DtApiV2Service.getHeaders() })
-      .map(res => res.json());
+      .pipe( map((res: any) => res.json() ) );
   }
 
   public updateVirtualSensor_temperature_setTemperature(sensorID: string, newTempStr: string): any {
@@ -58,7 +59,7 @@ export class DtApiV2Service {
       }
     };
     return this.http.post(url, postData, { headers: DtApiV2Service.getHeaders() })
-      .map(res => res.json());
+      .pipe( map((res: any) => res.json() ) );
   }
 
   public updateVirtualSensor_touch_set(sensorID: string): any {
@@ -67,7 +68,7 @@ export class DtApiV2Service {
       'touch': {}
     };
     return this.http.post(url, postData, { headers: DtApiV2Service.getHeaders() })
-      .map(res => res.json());
+      .pipe( map((res: any) => res.json() ) );
   }
 
 }

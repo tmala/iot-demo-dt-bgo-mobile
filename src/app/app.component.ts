@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
 import { MyLog } from './myLog';
 import { DtApiV2Service } from './dt/dtapiv2.service';
 import { Device, DeviceList } from './dt/dt_model';
@@ -16,7 +14,7 @@ import { PROJECT_ID } from './apikey';
 
 export class AppComponent implements OnInit {
   private dtApiService: DtApiV2Service;
-  public deviceArr: Device[] = new Array();
+  public deviceArr: Device[] = [];
   public selectedDevice: Device = null;
 
   private static timestamp() {
@@ -40,7 +38,7 @@ export class AppComponent implements OnInit {
 
 
   private static extractSensorIdFromName(name: string): string {
-    const sensorID: string = name;
+    const sensorID: String = name;
     const replaceMe: string = 'projects/' + PROJECT_ID + '/devices/';
     return sensorID.replace(replaceMe, '');
   }
@@ -159,7 +157,7 @@ export class AppComponent implements OnInit {
       .subscribe(
         (res: any) => {
           if (MyLog.isInfo()) {
-            console.log('VirtualSensor with thingId ' + sensorID + ' set to temperature = ' + newTempStr + ', result: ' + res);
+            console.log('VirtualSensor with thingId ' + sensorID + ' set to temperature = ' + newTempStr + ', result: ' + res.toString());
           }
           this.selectedDevice.reported.temperature.updateTime = AppComponent.timestamp();
           this.selectedDevice.reported.temperature.value = Number.parseFloat(newTempStr);
