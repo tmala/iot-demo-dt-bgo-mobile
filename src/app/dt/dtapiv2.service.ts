@@ -1,5 +1,4 @@
-import { Headers, Http } from '@angular/http';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BASIC_AUTH, PROJECT_ID } from '../apikey';
 
@@ -23,34 +22,33 @@ export class DtApiV2Service {
 
   private virtualSensorsUrl = API_URL_VS + PROJECT_ID + API_DEVICE;
 
-  private static getHeaders() {
-    const headers = new Headers();
-    headers.append('authorization', BASIC_AUTH);
-    headers.append('accept', 'text/json');
-    headers.append('cache-control', 'no-cache');
-    return headers;
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Authorization': BASIC_AUTH,
+      'accept': 'text/json',
+      'cache-control': 'no-cache'
+    })
+  };
+
+  constructor(private httpClient: HttpClient) {
   }
 
-  constructor(private http: Http) {
+  public getAllVirtualSensors() {
+    const myURL = API_URL + PROJECT_ID + API_DEVICES + FILTER_LABEL_VS;
+    return this.httpClient.get( myURL, this.httpOptions );
   }
 
-  public getAllVirtualSensors(): any {
-    return this.http.get(API_URL + PROJECT_ID + API_DEVICES + FILTER_LABEL_VS, {headers: DtApiV2Service.getHeaders()})
-      .pipe( map( (res: any) => res.json() ) );
-  }
-
-  public updateVirtualSensor_proximity_setObjectPresent(sensorID: string, objectPresent: string): any {
+  public updateVirtualSensor_proximity_setObjectPresent(sensorID: string, objectPresent: string) {
     const url = this.virtualSensorsUrl + sensorID + API_PUBLISH;
     const postData = {
       'objectPresent': {
         'state': objectPresent
       }
     };
-    return this.http.post(url, postData, { headers: DtApiV2Service.getHeaders() })
-      .pipe( map((res: any) => res.json() ) );
+    return this.httpClient.post(url, postData, this.httpOptions);
   }
 
-  public updateVirtualSensor_temperature_setTemperature(sensorID: string, newTempStr: string): any {
+  public updateVirtualSensor_temperature_setTemperature(sensorID: string, newTempStr: string) {
     const url = this.virtualSensorsUrl + sensorID + API_PUBLISH;
     const newTemp: number = Number.parseFloat(newTempStr);
     const postData = {
@@ -58,17 +56,15 @@ export class DtApiV2Service {
         'value': newTemp
       }
     };
-    return this.http.post(url, postData, { headers: DtApiV2Service.getHeaders() })
-      .pipe( map((res: any) => res.json() ) );
+    return this.httpClient.post(url, postData, this.httpOptions);
   }
 
-  public updateVirtualSensor_touch_set(sensorID: string): any {
+  public updateVirtualSensor_touch_set(sensorID: string) {
     const url = this.virtualSensorsUrl + sensorID + API_PUBLISH;
     const postData = {
       'touch': {}
     };
-    return this.http.post(url, postData, { headers: DtApiV2Service.getHeaders() })
-      .pipe( map((res: any) => res.json() ) );
+    return this.httpClient.post(url, postData, this.httpOptions);
   }
 
 }

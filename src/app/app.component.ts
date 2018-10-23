@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { MyLog } from './myLog';
 import { DtApiV2Service } from './dt/dtapiv2.service';
 import { Device, DeviceList } from './dt/dt_model';
 import { PROJECT_ID } from './apikey';
+import { throwError } from 'rxjs/internal/observable/throwError';
 
 @Component({
   selector: 'app-root',
@@ -43,8 +44,8 @@ export class AppComponent implements OnInit {
     return sensorID.replace(replaceMe, '');
   }
 
-  constructor(http: Http) {
-    this.dtApiService = new DtApiV2Service(http);
+  constructor(httpClient: HttpClient) {
+    this.dtApiService = new DtApiV2Service(httpClient);
     MyLog.setCurrentLoglevel(MyLog.LOGLEVEL_TRACE);
   }
 
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit {
         },
         (error: any) => {
           console.error(' Error: ' + error);
-          throw Error('Unable to get virtual sensors. Reason:' + error);
+          throwError('Unable to get virtual sensors. Reason:' + error);
         },
         () => {
           console.log('HTTP request ended, hopefully with success');
@@ -117,7 +118,7 @@ export class AppComponent implements OnInit {
           if (MyLog.isError()) {
             console.error(' Error: ' + error);
           }
-          throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
+          throwError('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
           if (MyLog.isTrace()) {
@@ -141,7 +142,7 @@ export class AppComponent implements OnInit {
           if (MyLog.isError()) {
             console.error(' Error: ' + error);
           }
-          throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
+          throwError('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
           if (MyLog.isTrace()) {
@@ -166,7 +167,7 @@ export class AppComponent implements OnInit {
           if (MyLog.isError()) {
             console.error(' Error: ' + error);
           }
-          throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
+          throwError('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
           if (MyLog.isTrace()) {
@@ -189,7 +190,7 @@ export class AppComponent implements OnInit {
           if (MyLog.isError()) {
             console.error(' Error: ' + error);
           }
-          throw Error('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
+          throwError('Unable to set virtual sensor with id ' + sensorID + ' reason:' + error);
         },
         () => {
           if (MyLog.isTrace()) {

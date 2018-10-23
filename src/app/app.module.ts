@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { DtApiV2Service } from './dt/dtapiv2.service';
@@ -10,7 +10,7 @@ import { DtApiV2Service } from './dt/dtapiv2.service';
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpClientModule
   ],
   providers: [DtApiV2Service],
   bootstrap: [AppComponent]
