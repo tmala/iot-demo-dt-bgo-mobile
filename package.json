@@ -1,6 +1,6 @@
 {
   "name": "iot-mobile-dt-virtualsensor",
-  "description": "A mobile friendly little Angular Web App",
+  "description": "A mobile friendly little Angular WebApp",
   "version": "0.0.2",
   "license": "MIT",
   "scripts": {
