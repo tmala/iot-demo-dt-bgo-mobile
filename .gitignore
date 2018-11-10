@@ -10,6 +10,8 @@
 
 # files not to use in git
 /src/app/apikey.ts
+/src/app/settings.ts
+
 
 # IDEs and editors
 /.idea
